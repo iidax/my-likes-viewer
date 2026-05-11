@@ -100,8 +100,10 @@ export default defineConfig({
 
 ## Step 5: プロジェクト構造の整備
 
+React Router v7 の慣習に従い、共有ロジックは `app/lib/` に置く。
+
 ```bash
-mkdir -p app/components app/db app/utils
+mkdir -p app/components app/lib/db app/utils
 ```
 
 
@@ -109,11 +111,14 @@ mkdir -p app/components app/db app/utils
 
 | ファイル | 内容 |
 |---|---|
-| `app/db/client.ts` | SQLite WASM シングルトン初期化 |
-| `app/db/schema.ts` | CREATE TABLE 定義 |
-| `app/db/likes.ts` | likes の CRUD |
+| `app/lib/db/migrations/0001_init.sql` | 初期スキーマ（Vite の `?raw` import で読み込む） |
+| `app/lib/db/migrate.ts` | マイグレーション実行（`import.meta.glob` で自動収集） |
+| `app/lib/db/client.ts` | SQLite WASM シングルトン初期化・マイグレーション呼び出し |
+| `app/lib/db/likes.ts` | likes の CRUD |
 | `app/utils/snowflake.ts` | tweetId → Date の変換 |
 | `app/utils/parseLikesJS.ts` | likes.js → Like[] パーサー |
+
+新しいマイグレーションを追加する場合は `migrations/` に `0002_xxx.sql` を置くだけでよい。
 
 
 ## Step 7: ルート・コンポーネントの実装
