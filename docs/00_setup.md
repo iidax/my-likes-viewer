@@ -3,12 +3,13 @@
 ## Step 1: React Router v7 の初期化
 
 ```bash
-npx create-react-router@latest .
+npx create-react-router@latest frontend/my-likes-viewer
+
 ```
 
 対話プロンプトへの回答:
 - `Initialize a new git repository?` → **No**（既に `.git` あり）
-- `Install dependencies?` → **Yes**
+- `Install dependencies?` → **No**
 
 生成されるファイル:
 
@@ -20,6 +21,11 @@ react-router.config.ts
 vite.config.ts
 tsconfig.json
 package.json
+```
+
+```
+cd frontend/my-likes-viewer
+npm i
 ```
 
 
