@@ -68,7 +68,7 @@ export default defineConfig({
         short_name: "Likes",
         theme_color: "#ffffff",
         icons: [
-            // アイコンは後で設定する。仮置き。
+          // アイコンは後で設定する。仮置き。
           { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
           { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
         ],
@@ -79,23 +79,11 @@ export default defineConfig({
       },
     }),
   ],
-  resolve: {
-    tsconfigPaths: true,
-  },
-  server: {
-    headers: {
-      // @sqlite.org/sqlite-wasm (OPFS) で必須
-      "Cross-Origin-Opener-Policy": "same-origin",
-      "Cross-Origin-Embedder-Policy": "require-corp",
-    },
-  },
   optimizeDeps: {
     exclude: ["@sqlite.org/sqlite-wasm"],
   },
 });
 ```
-
-> **注意**: `server.headers` は開発サーバーのみ有効。本番環境では nginx / Caddy 等のサーバー設定で同じヘッダーを付与する必要がある。
 
 
 ## Step 5: プロジェクト構造の整備
@@ -113,7 +101,8 @@ mkdir -p app/components app/lib/db app/utils
 |---|---|
 | `app/lib/db/migrations/0001_init.sql` | 初期スキーマ（Vite の `?raw` import で読み込む） |
 | `app/lib/db/migrate.ts` | マイグレーション実行（`import.meta.glob` で自動収集） |
-| `app/lib/db/client.ts` | SQLite WASM シングルトン初期化・マイグレーション呼び出し |
+| `app/lib/db/worker.ts` | SQLite WASM を Web Worker 内で初期化・操作する |
+| `app/lib/db/client.ts` | Worker へのメッセージングをラップした DB クライアント |
 | `app/lib/db/likes.ts` | likes の CRUD |
 | `app/utils/snowflake.ts` | tweetId → Date の変換 |
 | `app/utils/parseLikesJS.ts` | likes.js → Like[] パーサー |
@@ -127,7 +116,7 @@ mkdir -p app/components app/lib/db app/utils
 |---|---|---|
 | `app/routes/home.tsx` | `/` | いいね一覧・フィルター・ページネーション |
 | `app/routes/upload.tsx` | `/upload` | likes.js アップロード |
-| `app/routes/settings.tsx` | `/settings` | X API キー設定 |
+| `app/routes/settings.tsx` | `/settings` | X API キー設定・DBクリア |
 | `app/components/LikeItem.tsx` | - | 1件表示 |
 | `app/components/LikesList.tsx` | - | リスト表示 |
 | `app/components/Pagination.tsx` | - | ページネーション |
