@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
 import { DateFilter } from "../components/DateFilter";
 import { LikesList } from "../components/LikesList";
 import { Pagination } from "../components/Pagination";
@@ -9,13 +10,15 @@ export function meta() {
   return [{ title: "My Likes Viewer" }];
 }
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 12;
 
 export default function Home() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Math.max(0, parseInt(searchParams.get("page") ?? "0"));
+  const fromDateStr = searchParams.get("from") ?? "";
+
   const [likes, setLikes] = useState<Like[]>([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [page, setPage] = useState(0);
-  const [fromDateStr, setFromDateStr] = useState("");
   const [loading, setLoading] = useState(true);
 
   const fromDate = fromDateStr ? new Date(fromDateStr).getTime() : undefined;
@@ -33,13 +36,33 @@ export default function Home() {
     });
   }, [page, fromDate]);
 
-  const handleDateChange = (value: string) => {
-    setFromDateStr(value);
-    setPage(0);
+  const setPage = (newPage: number) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set("page", String(newPage));
+      return next;
+    });
   };
 
+  const handleDateChange = (value: string) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (value) {
+        next.set("from", value);
+      } else {
+        next.delete("from");
+      }
+      next.set("page", "0");
+      return next;
+    });
+  };
+
+  const pagination = totalPages > 1 && (
+    <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+  );
+
   return (
-    <main className="mx-auto max-w-2xl px-4 py-6">
+    <main className="mx-auto max-w-6xl px-4 py-6">
       <div className="mb-4 flex items-center justify-between">
         <DateFilter value={fromDateStr} onChange={handleDateChange} />
         <span className="text-sm text-gray-500">{totalCount} 件</span>
@@ -51,16 +74,9 @@ export default function Home() {
         <p className="py-8 text-center text-gray-400">データがありません</p>
       ) : (
         <>
+          {pagination && <div className="mb-4">{pagination}</div>}
           <LikesList likes={likes} />
-          {totalPages > 1 && (
-            <div className="mt-6">
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onPageChange={setPage}
-              />
-            </div>
-          )}
+          {pagination && <div className="mt-6">{pagination}</div>}
         </>
       )}
     </main>

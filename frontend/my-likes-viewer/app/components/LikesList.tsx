@@ -13,7 +13,7 @@ export function LikesList({ likes }: Props) {
   }
 
   return (
-    <ul className="flex flex-col gap-3">
+    <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {likes.map((like) => (
         <li key={like.tweetId}>
           <LikeItem like={like} />
