@@ -47,10 +47,55 @@ npm install -D vite-plugin-pwa
 
 ## Step 4: Vite の設定変更
 
-`vite.config.ts` に以下を追加する:
+`vite.config.ts` を以下に書き換える:
 
-1. **COOP / COEP ヘッダー** — `@sqlite.org/sqlite-wasm` の OPFS モードに必須
-2. **vite-plugin-pwa** — Service Worker・manifest の生成
+```ts
+import { reactRouter } from "@react-router/dev/vite";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
+
+export default defineConfig({
+  plugins: [
+    tailwindcss(),
+    reactRouter(),
+    VitePWA({
+      registerType: "autoUpdate",
+      injectRegister: "auto",
+      includeAssets: ["favicon.svg"],
+      manifest: {
+        name: "My Likes Viewer",
+        short_name: "Likes",
+        theme_color: "#ffffff",
+        icons: [
+            // アイコンは後で設定する。仮置き。
+          { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+          { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+        ],
+      },
+      workbox: {
+        // OPFS は Service Worker 内で直接は使えない
+        navigateFallback: "/index.html",
+      },
+    }),
+  ],
+  resolve: {
+    tsconfigPaths: true,
+  },
+  server: {
+    headers: {
+      // @sqlite.org/sqlite-wasm (OPFS) で必須
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Embedder-Policy": "require-corp",
+    },
+  },
+  optimizeDeps: {
+    exclude: ["@sqlite.org/sqlite-wasm"],
+  },
+});
+```
+
+> **注意**: `server.headers` は開発サーバーのみ有効。本番環境では nginx / Caddy 等のサーバー設定で同じヘッダーを付与する必要がある。
 
 
 ## Step 5: プロジェクト構造の整備
