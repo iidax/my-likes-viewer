@@ -125,5 +125,32 @@ mkdir -p app/components app/lib/db app/utils
 
 ## Step 8: PWA 対応
 
-- `public/manifest.webmanifest` を作成
 - `public/icons/` にアイコンを配置（512×512, 192×192 推奨）
+- `manifest.webmanifest` は `vite-plugin-pwa` がビルド時に自動生成するため手動作成不要
+
+
+## Step 9: PWA の動作確認
+
+`vite-plugin-pwa` は **開発サーバーではサービスワーカーを登録しない**。PWA として動作確認するには本番ビルドをローカルで配信する必要がある。
+
+### 手順
+
+```bash
+# 1. 本番ビルド
+npm run build
+# → build/client/ に出力される（SPA モードのため build/server/ は自動削除）
+
+# 2. ローカルで静的配信
+npx serve build/client
+```
+
+> `npm run start`（react-router-serve）は SPA モードでサーバービルドが存在しないため使用不可。
+
+### 確認ポイント
+
+| 確認項目 | 場所 |
+|---|---|
+| マニフェスト・アイコン | DevTools > Application > Manifest |
+| サービスワーカー登録 | DevTools > Application > Service Workers |
+| インストールプロンプト | アドレスバー右端のインストールボタン（Chrome） |
+| オフライン動作 | DevTools > Network > Offline にして再読み込み |
