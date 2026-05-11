@@ -19,6 +19,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <script async src="https://platform.twitter.com/widgets.js" />
       </head>
       <body className="min-h-screen bg-gray-50 text-gray-900">
         <header className="border-b bg-white px-4 py-3">
