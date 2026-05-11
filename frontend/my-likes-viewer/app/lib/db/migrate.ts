@@ -21,7 +21,17 @@ export function runMigrations(db: DB): void {
   const row = db.selectObject(
     "SELECT COALESCE(MAX(version), 0) as v FROM _schema_version",
   );
-  const current = row.v as number;
+  let current = row.v as number;
+
+  if (current > 0) {
+    const tableCheck = db.selectObject(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='likes'",
+    );
+    if (!tableCheck) {
+      db.exec("DELETE FROM _schema_version");
+      current = 0;
+    }
+  }
 
   for (const { version, sql } of migrations) {
     if (version <= current) continue;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getDb } from "../lib/db/client";
 
 const LS_KEY = "x_bearer_token";
 
@@ -9,6 +10,21 @@ export function meta() {
 export default function Settings() {
   const [apiKey, setApiKey] = useState("");
   const [saved, setSaved] = useState(false);
+  const [clearing, setClearing] = useState(false);
+  const [cleared, setCleared] = useState(false);
+
+  const handleClearDb = async () => {
+    if (!confirm("データベースをクリアしますか？すべてのいいねデータが削除されます。")) return;
+    setClearing(true);
+    try {
+      const db = await getDb();
+      await db.clearDb();
+      setCleared(true);
+      setTimeout(() => setCleared(false), 2000);
+    } finally {
+      setClearing(false);
+    }
+  };
 
   useEffect(() => {
     setApiKey(localStorage.getItem(LS_KEY) ?? "");
@@ -51,6 +67,21 @@ export default function Settings() {
           保存
         </button>
         {saved && <p className="text-sm text-green-600">保存しました</p>}
+      </div>
+
+      <div className="mt-10 flex flex-col gap-2 border-t pt-8">
+        <h2 className="text-sm font-medium">データベース</h2>
+        <p className="text-xs text-gray-500">
+          ローカルのいいねデータをすべて削除します。
+        </p>
+        <button
+          onClick={handleClearDb}
+          disabled={clearing}
+          className="mt-2 self-start rounded bg-red-500 px-4 py-2 text-sm text-white hover:bg-red-600 disabled:opacity-50"
+        >
+          {clearing ? "クリア中…" : "データベースをクリア"}
+        </button>
+        {cleared && <p className="text-sm text-green-600">クリアしました</p>}
       </div>
     </main>
   );

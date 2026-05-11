@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { DateFilter } from "../components/DateFilter";
 import { LikesList } from "../components/LikesList";
 import { Pagination } from "../components/Pagination";
-import { countLikes, hasLikes, queryLikes } from "../lib/db/likes";
+import { countLikes, queryLikes } from "../lib/db/likes";
 import type { Like } from "../types";
 
 export function meta() {
@@ -13,7 +12,6 @@ export function meta() {
 const PAGE_SIZE = 10;
 
 export default function Home() {
-  const navigate = useNavigate();
   const [likes, setLikes] = useState<Like[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
@@ -22,12 +20,6 @@ export default function Home() {
 
   const fromDate = fromDateStr ? new Date(fromDateStr).getTime() : undefined;
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
-
-  useEffect(() => {
-    hasLikes().then((has) => {
-      if (!has) navigate("/upload");
-    });
-  }, [navigate]);
 
   useEffect(() => {
     setLoading(true);
@@ -55,6 +47,8 @@ export default function Home() {
 
       {loading ? (
         <p className="py-8 text-center text-gray-400">読み込み中...</p>
+      ) : totalCount === 0 ? (
+        <p className="py-8 text-center text-gray-400">データがありません</p>
       ) : (
         <>
           <LikesList likes={likes} />

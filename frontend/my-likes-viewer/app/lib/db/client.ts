@@ -57,6 +57,7 @@ export interface DB {
   selectObjects(sql: string, bind?: BindParam[]): Promise<Record<string, unknown>[]>;
   selectObject(sql: string, bind?: BindParam[]): Promise<Record<string, unknown> | undefined>;
   batch(statements: { sql: string; bind?: BindParam[] }[]): Promise<void>;
+  clearDb(): Promise<void>;
 }
 
 export async function getDb(): Promise<DB> {
@@ -80,6 +81,9 @@ export async function getDb(): Promise<DB> {
     },
     async batch(statements) {
       await send({ type: "batch", statements });
+    },
+    async clearDb() {
+      await send({ type: "clearDb" });
     },
   };
 }
