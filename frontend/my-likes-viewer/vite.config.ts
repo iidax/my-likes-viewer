@@ -27,16 +27,6 @@ export default defineConfig({
       },
     }),
   ],
-  resolve: {
-    tsconfigPaths: true,
-  },
-  server: {
-    headers: {
-      // @sqlite.org/sqlite-wasm (OPFS) で必須
-      "Cross-Origin-Opener-Policy": "same-origin",
-      "Cross-Origin-Embedder-Policy": "require-corp",
-    },
-  },
   optimizeDeps: {
     exclude: ["@sqlite.org/sqlite-wasm"],
   },
