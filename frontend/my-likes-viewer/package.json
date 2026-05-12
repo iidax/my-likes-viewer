@@ -17,6 +17,9 @@
     "react-dom": "19.1.0",
     "react-router": "7.14.2"
   },
+  "optionalDependencies": {
+    "lightningcss-linux-x64-gnu": "1.29.2"
+  },
   "devDependencies": {
     "@react-router/dev": "7.14.2",
     "@tailwindcss/vite": "4.1.0",
