@@ -19,6 +19,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var r=new URLSearchParams(window.location.search).get('redirect');if(r)history.replaceState(null,'',r);})();`,
+          }}
+        />
         <script async src="https://platform.twitter.com/widgets.js" />
       </head>
       <body className="min-h-screen bg-gray-50 text-gray-900">

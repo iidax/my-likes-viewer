@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      // GitHub Pages SPA: /my-likes-viewer/upload → /my-likes-viewer/?redirect=%2Fupload
+      (function () {
+        var base = "/my-likes-viewer/";
+        var l = window.location;
+        var path = l.pathname.slice(base.length - 1);
+        l.replace(
+          l.protocol +
+            "//" +
+            l.host +
+            base +
+            "?redirect=" +
+            encodeURIComponent(path + l.search) +
+            l.hash
+        );
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
