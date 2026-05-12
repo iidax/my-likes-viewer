@@ -1,0 +1,12 @@
+{
+  "name": "my-likes-viewer",
+  "private": true,
+  "workspaces": [
+    "frontend/my-likes-viewer"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w frontend/my-likes-viewer",
+    "build": "npm run build -w frontend/my-likes-viewer",
+    "typecheck": "npm run typecheck -w frontend/my-likes-viewer"
+  }
+}
