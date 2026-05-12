@@ -1,5 +1,6 @@
 {
   "name": "my-likes-viewer",
+  "version": "1.0.0",
   "private": true,
   "workspaces": [
     "frontend/my-likes-viewer"
