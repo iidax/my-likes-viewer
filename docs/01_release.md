@@ -33,6 +33,18 @@ export default defineConfig({
 });
 ```
 
+また、React Router が `/my-likes-viewer/` を未知のパスと判断して 404 を返さないようにする。
+
+```ts
+// frontend/my-likes-viewer/react-router.config.ts
+import type { Config } from "@react-router/dev/config";
+
+export default {
+  ssr: false,
+  basename: "/my-likes-viewer/",
+} satisfies Config;
+```
+
 ---
 
 ## 3. GitHub Pages の設定
