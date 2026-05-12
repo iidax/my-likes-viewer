@@ -8,7 +8,7 @@ export function meta() {
 }
 
 export default function Settings() {
-  const [apiKey, setApiKey] = useState("");
+  const [bearerToken, setBearerToken] = useState("");
   const [saved, setSaved] = useState(false);
   const [clearing, setClearing] = useState(false);
   const [cleared, setCleared] = useState(false);
@@ -27,12 +27,12 @@ export default function Settings() {
   };
 
   useEffect(() => {
-    setApiKey(localStorage.getItem(LS_KEY) ?? "");
+    setBearerToken(localStorage.getItem(LS_KEY) ?? "");
   }, []);
 
-  const handleSave = () => {
-    if (apiKey) {
-      localStorage.setItem(LS_KEY, apiKey);
+  const handleSaveBearerToken = () => {
+    if (bearerToken) {
+      localStorage.setItem(LS_KEY, bearerToken);
     } else {
       localStorage.removeItem(LS_KEY);
     }
@@ -45,7 +45,7 @@ export default function Settings() {
       <h1 className="mb-6 text-xl font-semibold">設定</h1>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="api-key" className="text-sm font-medium">
+        <label htmlFor="bearer-token" className="text-sm font-medium">
           X API Bearer Token
         </label>
         <p className="text-xs text-gray-500">
@@ -53,15 +53,15 @@ export default function Settings() {
           ブラウザの localStorage に保存されます。
         </p>
         <input
-          id="api-key"
+          id="bearer-token"
           type="password"
-          value={apiKey}
-          onChange={(e) => setApiKey(e.target.value)}
+          value={bearerToken}
+          onChange={(e) => setBearerToken(e.target.value)}
           placeholder="Bearer token を入力"
           className="rounded border px-3 py-2 text-sm font-mono"
         />
         <button
-          onClick={handleSave}
+          onClick={handleSaveBearerToken}
           className="mt-2 self-start rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
         >
           保存
