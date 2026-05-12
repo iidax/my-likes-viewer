@@ -7,14 +7,13 @@
       (function () {
         var base = "/my-likes-viewer/";
         var l = window.location;
-        var path = l.pathname.slice(base.length - 1);
         l.replace(
           l.protocol +
             "//" +
             l.host +
             base +
             "?redirect=" +
-            encodeURIComponent(path + l.search) +
+            encodeURIComponent(l.pathname + l.search) +
             l.hash
         );
       })();
