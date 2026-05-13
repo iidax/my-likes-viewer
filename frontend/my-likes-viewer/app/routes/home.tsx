@@ -3,8 +3,8 @@ import { useSearchParams } from "react-router";
 import { AppGuide } from "../components/AppGuide";
 import { DateFilter } from "../components/DateFilter";
 import { LikesList } from "../components/LikesList";
-import { Pagination } from "../components/Pagination";
-import { countLikes, getOldestTweetDate, insertLikes, queryLikes } from "../lib/db/likes";
+import { computeDotTargetPages, Pagination } from "../components/Pagination";
+import { countLikes, getOldestTweetDate, getTweetDatesAtOffsets, insertLikes, queryLikes } from "../lib/db/likes";
 import { HOME_PAGE_SIZE } from "../constants";
 import type { Like } from "../types";
 import { parseLikesJS } from "../utils/parseLikesJS";
@@ -14,6 +14,14 @@ export function meta() {
 }
 
 const SESSION_KEY = "homeSearchParams";
+
+function formatDotDate(ms: number): string {
+  const d = new Date(ms);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}/${m}/${day}`;
+}
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,6 +33,7 @@ export default function Home() {
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [defaultFromDate, setDefaultFromDate] = useState("");
+  const [dotDates, setDotDates] = useState<(string | null)[]>([]);
   const [uploadStatus, setUploadStatus] = useState<"idle" | "loading" | "error">("idle");
   const [uploadError, setUploadError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -74,6 +83,15 @@ export default function Home() {
       setLikes(rows);
       setTotalCount(count);
       setLoading(false);
+      if (count > 0) {
+        const tp = Math.max(1, Math.ceil(count / HOME_PAGE_SIZE));
+        const offsets = computeDotTargetPages(tp).map((p) => p * HOME_PAGE_SIZE);
+        getTweetDatesAtOffsets(offsets, fromDate, untilDate).then((ms) => {
+          setDotDates(ms.map((t) => (t != null ? formatDotDate(t) : null)));
+        });
+      } else {
+        setDotDates([]);
+      }
     });
   }, [page, fromDate, untilDate]);
 
@@ -155,7 +173,7 @@ export default function Home() {
   };
 
   const pagination = totalPages > 1 && (
-    <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+    <Pagination page={page} totalPages={totalPages} onPageChange={setPage} dotDates={dotDates} />
   );
 
   return (

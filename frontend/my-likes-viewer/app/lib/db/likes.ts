@@ -78,6 +78,28 @@ export async function queryLikes(opts: LikeQueryOptions): Promise<Like[]> {
   }));
 }
 
+export async function getTweetDatesAtOffsets(
+  offsets: number[],
+  fromDate?: number,
+  untilDate?: number,
+): Promise<(number | null)[]> {
+  const db = await getDb();
+  const conditions: string[] = [];
+  const params: number[] = [];
+  if (fromDate != null) { conditions.push("tweeted_at >= ?"); params.push(fromDate); }
+  if (untilDate != null) { conditions.push("tweeted_at <= ?"); params.push(untilDate); }
+  const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+  const results = await Promise.all(
+    offsets.map((offset) =>
+      db.selectObject(
+        `SELECT tweeted_at FROM likes ${where} ORDER BY tweeted_at DESC LIMIT 1 OFFSET ?`,
+        [...params, offset],
+      ),
+    ),
+  );
+  return results.map((row) => (row?.tweeted_at != null ? (row.tweeted_at as number) : null));
+}
+
 export async function insertLikes(likes: Like[]): Promise<void> {
   const db = await getDb();
   await db.batch(

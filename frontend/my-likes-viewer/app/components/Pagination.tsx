@@ -4,11 +4,20 @@ interface Props {
   page: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  dotDates?: (string | null)[];
 }
 
 const MAX_DOTS = 20;
 
-export function Pagination({ page, totalPages, onPageChange }: Props) {
+export function computeDotTargetPages(totalPages: number): number[] {
+  const numDots = Math.min(totalPages, MAX_DOTS);
+  const span = Math.max(numDots - 1, 1);
+  return Array.from({ length: numDots }, (_, i) =>
+    Math.round((i / span) * (totalPages - 1)),
+  );
+}
+
+export function Pagination({ page, totalPages, onPageChange, dotDates }: Props) {
   const [inputValue, setInputValue] = useState(String(page + 1));
 
   useEffect(() => {
@@ -34,25 +43,26 @@ export function Pagination({ page, totalPages, onPageChange }: Props) {
   const currentDot = Math.round((page / Math.max(totalPages - 1, 1)) * span);
 
   const dots = useMemo(() => {
-    return Array.from({ length: numDots }, (_, i) => {
-      const targetPage = Math.round((i / span) * (totalPages - 1));
-      const prevBoundary = i === 0 ? 1 : Math.round(((i - 0.5) / span) * (totalPages - 1)) + 1;
+    const targetPages = computeDotTargetPages(totalPages);
+    return targetPages.map((targetPage, i) => {
+      const prevBoundary =
+        i === 0 ? 1 : Math.round(((i - 0.5) / span) * (totalPages - 1)) + 1;
       const nextBoundary =
         i === numDots - 1
           ? totalPages
           : Math.round(((i + 0.5) / span) * (totalPages - 1));
-      const label =
+      const pageLabel =
         prevBoundary === nextBoundary
           ? `${prevBoundary} ページ`
           : `${prevBoundary}〜${nextBoundary} ページ`;
-      return { i, targetPage, label };
+      return { i, targetPage, pageLabel };
     });
   }, [numDots, span, totalPages]);
 
   return (
     <nav className="flex flex-col items-center gap-2">
       <div className="flex items-center gap-1.5 py-1">
-        {dots.map(({ i, targetPage, label }) => {
+        {dots.map(({ i, targetPage, pageLabel }) => {
           const dist = Math.abs(i - currentDot);
           const sizeClass =
             dist === 0
@@ -68,14 +78,19 @@ export function Pagination({ page, totalPages, onPageChange }: Props) {
               : dist <= 2
                 ? "bg-gray-400 dark:bg-gray-500"
                 : "bg-gray-200 dark:bg-gray-600";
+          const dateLabel = dotDates?.[i];
+          const tooltipText = dateLabel ?? pageLabel;
           return (
-            <button
-              key={i}
-              type="button"
-              title={label}
-              onClick={() => onPageChange(targetPage)}
-              className={`rounded-full transition-all hover:scale-150 hover:bg-blue-400 dark:hover:bg-blue-400 ${sizeClass} ${colorClass}`}
-            />
+            <div key={i} className="group relative flex items-center justify-center">
+              <div className="pointer-events-none absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-0.5 text-xs text-white opacity-0 transition-opacity duration-75 group-hover:opacity-100 dark:bg-gray-600">
+                {tooltipText}
+              </div>
+              <button
+                type="button"
+                onClick={() => onPageChange(targetPage)}
+                className={`rounded-full transition-all hover:scale-150 hover:bg-blue-400 dark:hover:bg-blue-400 ${sizeClass} ${colorClass}`}
+              />
+            </div>
           );
         })}
       </div>
