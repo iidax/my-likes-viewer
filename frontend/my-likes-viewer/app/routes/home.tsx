@@ -144,6 +144,16 @@ export default function Home() {
     });
   };
 
+  const handleRangeChange = (from: string, until: string) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (from) { next.set("from", from); } else { next.delete("from"); }
+      if (until) { next.set("until", until); } else { next.delete("until"); }
+      next.set("page", "0");
+      return next;
+    });
+  };
+
   const pagination = totalPages > 1 && (
     <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
   );
@@ -153,10 +163,12 @@ export default function Home() {
       <AppGuide />
       <div className="mb-4 flex items-center justify-between">
         <DateFilter
-          fromValue={effectiveFromStr}
+          fromValue={fromDateStr}
           untilValue={untilDateStr}
+          fromDisplay={effectiveFromStr}
           onFromChange={handleFromChange}
           onUntilChange={handleUntilChange}
+          onRangeChange={handleRangeChange}
         />
         <span className="text-sm text-gray-500">{totalCount} 件</span>
       </div>
