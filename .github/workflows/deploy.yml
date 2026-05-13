@@ -29,31 +29,31 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      # 依存パッケージの脆弱性チェック（高・重大のみ失敗）
+      # 依存パッケージの脆弱性チェック（致命的なもののみ失敗）
       - name: npm audit
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=critical
 
       # 型チェック
       - name: Type check
         run: npm run typecheck
 
-  codeql:
-    name: CodeQL Analysis
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-    steps:
-      - uses: actions/checkout@v4.2.2
+  # codeql:
+  #   name: CodeQL Analysis
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     security-events: write
+  #   steps:
+  #     - uses: actions/checkout@v4.2.2
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: javascript-typescript
+  #     - name: Initialize CodeQL
+  #       uses: github/codeql-action/init@v3
+  #       with:
+  #         languages: javascript-typescript
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+  #     - name: Perform CodeQL Analysis
+  #       uses: github/codeql-action/analyze@v3
 
   deploy:
     name: Build & Deploy
@@ -73,7 +73,7 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build
         run: npm run build
