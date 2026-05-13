@@ -63,11 +63,26 @@ export default function Upload() {
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
       <h1 className="mb-2 text-xl font-semibold">likes.js をアップロード</h1>
-      <p className="mb-6 text-sm text-gray-500">
+      <p className="mb-3 text-sm text-gray-500">
         X のデータアーカイブに含まれる{" "}
         <code className="rounded bg-gray-100 px-1">data/like.js</code>{" "}
         を選択してください。
       </p>
+      <details className="mb-6 text-sm text-gray-500">
+        <summary className="cursor-pointer select-none hover:text-gray-700">
+          like.js ファイルの内容例
+        </summary>
+        <pre className="mt-2 overflow-x-auto rounded-lg bg-gray-50 p-4 text-xs leading-relaxed text-gray-600">{`window.YTD.like.part0 = [
+  {
+    "like": {
+      "tweetId": "1234567890123456789",
+      "fullText": "ツイートのテキスト内容",
+      "expandedUrl": "https://twitter.com/i/web/status/1234567890123456789"
+    }
+  },
+  ...
+]`}</pre>
+      </details>
 
       <label className="flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-dashed border-gray-300 p-10 hover:border-blue-400">
         <span className="text-gray-500">
