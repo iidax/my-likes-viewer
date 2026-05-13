@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router";
 import { DateFilter } from "../components/DateFilter";
 import { LikesList } from "../components/LikesList";
 import { Pagination } from "../components/Pagination";
-import { countLikes, queryLikes } from "../lib/db/likes";
+import { countLikes, getOldestTweetDate, queryLikes } from "../lib/db/likes";
 import type { Like } from "../types";
 
 export function meta() {
@@ -16,25 +16,43 @@ export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Math.max(0, parseInt(searchParams.get("page") ?? "0"));
   const fromDateStr = searchParams.get("from") ?? "";
+  const untilDateStr = searchParams.get("until") ?? "";
 
   const [likes, setLikes] = useState<Like[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [defaultFromDate, setDefaultFromDate] = useState("");
 
-  const fromDate = fromDateStr ? new Date(fromDateStr).getTime() : undefined;
+  useEffect(() => {
+    getOldestTweetDate().then((ms) => {
+      if (ms == null) return;
+      const iso = new Date(ms).toISOString().slice(0, 10);
+      setDefaultFromDate(iso);
+      setSearchParams((prev) => {
+        if (prev.has("from")) return prev;
+        const next = new URLSearchParams(prev);
+        next.set("from", iso);
+        return next;
+      }, { replace: true });
+    });
+  }, []);
+
+  const effectiveFromStr = fromDateStr || defaultFromDate;
+  const fromDate = effectiveFromStr ? new Date(effectiveFromStr).getTime() : undefined;
+  const untilDate = untilDateStr ? new Date(untilDateStr + "T23:59:59").getTime() : undefined;
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      queryLikes({ page, fromDate, pageSize: PAGE_SIZE }),
-      countLikes(fromDate),
+      queryLikes({ page, fromDate, untilDate, pageSize: PAGE_SIZE }),
+      countLikes(fromDate, untilDate),
     ]).then(([rows, count]) => {
       setLikes(rows);
       setTotalCount(count);
       setLoading(false);
     });
-  }, [page, fromDate]);
+  }, [page, fromDate, untilDate]);
 
   const setPage = (newPage: number) => {
     setSearchParams((prev) => {
@@ -44,14 +62,19 @@ export default function Home() {
     });
   };
 
-  const handleDateChange = (value: string) => {
+  const handleFromChange = (value: string) => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
-      if (value) {
-        next.set("from", value);
-      } else {
-        next.delete("from");
-      }
+      if (value) { next.set("from", value); } else { next.delete("from"); }
+      next.set("page", "0");
+      return next;
+    });
+  };
+
+  const handleUntilChange = (value: string) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (value) { next.set("until", value); } else { next.delete("until"); }
       next.set("page", "0");
       return next;
     });
@@ -64,7 +87,12 @@ export default function Home() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-6">
       <div className="mb-4 flex items-center justify-between">
-        <DateFilter value={fromDateStr} onChange={handleDateChange} />
+        <DateFilter
+          fromValue={effectiveFromStr}
+          untilValue={untilDateStr}
+          onFromChange={handleFromChange}
+          onUntilChange={handleUntilChange}
+        />
         <span className="text-sm text-gray-500">{totalCount} 件</span>
       </div>
 

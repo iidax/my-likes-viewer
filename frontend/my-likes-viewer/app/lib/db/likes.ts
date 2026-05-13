@@ -3,11 +3,19 @@ import { getDb } from "./client";
 
 export interface LikeQueryOptions {
   fromDate?: number; // Unix ms
+  untilDate?: number; // Unix ms
   page: number;
   pageSize?: number;
 }
 
 const DEFAULT_PAGE_SIZE = 10;
+
+export async function getOldestTweetDate(): Promise<number | null> {
+  const db = await getDb();
+  const row = await db.selectObject("SELECT MIN(tweeted_at) as min_at FROM likes");
+  const val = row?.min_at;
+  return val != null ? (val as number) : null;
+}
 
 export async function hasLikes(): Promise<boolean> {
   const db = await getDb();
@@ -15,16 +23,17 @@ export async function hasLikes(): Promise<boolean> {
   return ((row?.count ?? 0) as number) > 0;
 }
 
-export async function countLikes(fromDate?: number): Promise<number> {
+export async function countLikes(fromDate?: number, untilDate?: number): Promise<number> {
   const db = await getDb();
-  if (fromDate != null) {
-    const row = await db.selectObject(
-      "SELECT COUNT(*) as count FROM likes WHERE tweeted_at >= ?",
-      [fromDate],
-    );
-    return (row?.count ?? 0) as number;
-  }
-  const row = await db.selectObject("SELECT COUNT(*) as count FROM likes");
+  const conditions: string[] = [];
+  const params: number[] = [];
+  if (fromDate != null) { conditions.push("tweeted_at >= ?"); params.push(fromDate); }
+  if (untilDate != null) { conditions.push("tweeted_at <= ?"); params.push(untilDate); }
+  const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+  const row = await db.selectObject(
+    `SELECT COUNT(*) as count FROM likes ${where}`,
+    params.length ? params : undefined,
+  );
   return (row?.count ?? 0) as number;
 }
 
@@ -33,23 +42,20 @@ export async function queryLikes(opts: LikeQueryOptions): Promise<Like[]> {
   const pageSize = opts.pageSize ?? DEFAULT_PAGE_SIZE;
   const offset = opts.page * pageSize;
 
-  const rows =
-    opts.fromDate != null
-      ? await db.selectObjects(
-          `SELECT tweet_id, full_text, expanded_url, tweeted_at, like_order
-           FROM likes
-           WHERE tweeted_at >= ?
-           ORDER BY tweeted_at DESC
-           LIMIT ? OFFSET ?`,
-          [opts.fromDate, pageSize, offset],
-        )
-      : await db.selectObjects(
-          `SELECT tweet_id, full_text, expanded_url, tweeted_at, like_order
-           FROM likes
-           ORDER BY tweeted_at DESC
-           LIMIT ? OFFSET ?`,
-          [pageSize, offset],
-        );
+  const conditions: string[] = [];
+  const params: (number | string)[] = [];
+  if (opts.fromDate != null) { conditions.push("tweeted_at >= ?"); params.push(opts.fromDate); }
+  if (opts.untilDate != null) { conditions.push("tweeted_at <= ?"); params.push(opts.untilDate); }
+  const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+
+  const rows = await db.selectObjects(
+    `SELECT tweet_id, full_text, expanded_url, tweeted_at, like_order
+     FROM likes
+     ${where}
+     ORDER BY tweeted_at DESC
+     LIMIT ? OFFSET ?`,
+    [...params, pageSize, offset],
+  );
 
   return rows.map((row) => ({
     tweetId: row["tweet_id"] as string,
