@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+import { AppGuide } from "../components/AppGuide";
 import { DateFilter } from "../components/DateFilter";
 import { LikesList } from "../components/LikesList";
 import { Pagination } from "../components/Pagination";
@@ -86,6 +87,7 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-6">
+      <AppGuide />
       <div className="mb-4 flex items-center justify-between">
         <DateFilter
           fromValue={effectiveFromStr}
