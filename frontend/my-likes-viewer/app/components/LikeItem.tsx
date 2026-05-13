@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import type { Like } from "../types";
-import { getOembedCache } from "../lib/db/oembed";
 import { fetchOembed } from "../utils/fetchOembed";
 
 // split with a capturing group: odd indices are URLs, even indices are plain text
@@ -52,17 +51,10 @@ export function LikeItem({ like }: Props) {
       ([entry]) => {
         if (!entry.isIntersecting) return;
         observer.disconnect();
-        // キャッシュヒット時はローディング状態を出さずに即表示
-        getOembedCache(like.tweetId).then((cached) => {
-          if (cached) {
-            setHtml(cached);
-            return;
-          }
-          setLoading(true);
-          fetchOembed(like.tweetId).then((result) => {
-            setHtml(result);
-            setLoading(false);
-          });
+        setLoading(true);
+        fetchOembed(like.tweetId).then((result) => {
+          setHtml(result);
+          setLoading(false);
         });
       },
       { rootMargin: "200px" },

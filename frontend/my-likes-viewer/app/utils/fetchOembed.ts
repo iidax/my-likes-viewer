@@ -1,5 +1,7 @@
 import { getOembedCache, setOembedCache } from "../lib/db/oembed";
 
+const _memCache = new Map<string, string>();
+
 let _active = 0;
 const MAX_CONCURRENT = 3;
 const _queue: Array<() => void> = [];
@@ -22,8 +24,13 @@ function releaseSlot(): void {
 }
 
 export async function fetchOembed(tweetId: string): Promise<string | null> {
+  if (_memCache.has(tweetId)) return _memCache.get(tweetId)!;
+
   const cached = await getOembedCache(tweetId);
-  if (cached) return cached;
+  if (cached) {
+    _memCache.set(tweetId, cached);
+    return cached;
+  }
 
   await acquireSlot();
   try {
@@ -33,6 +40,7 @@ export async function fetchOembed(tweetId: string): Promise<string | null> {
     const data = (await res.json()) as { html?: string };
     if (!data.html) return null;
     await setOembedCache(tweetId, data.html);
+    _memCache.set(tweetId, data.html);
     return data.html;
   } catch {
     return null;
