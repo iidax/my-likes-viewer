@@ -27,7 +27,17 @@ export default function Settings() {
   return (
     <main className="mx-auto max-w-2xl px-4 py-10">
       <h1 className="mb-6 text-xl font-semibold">設定</h1>
-      <p className="mb-6 text-xs text-gray-400">v{import.meta.env.VITE_APP_VERSION}</p>
+      <p className="mb-6 flex items-center gap-3 text-xs text-gray-400">
+        <span>v{import.meta.env.VITE_APP_VERSION}</span>
+        <a
+          href="https://github.com/iidax/my-likes-viewer"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-gray-600 dark:hover:text-gray-300"
+        >
+          GitHub
+        </a>
+      </p>
 
       <div className="flex flex-col gap-2">
         <h2 className="text-sm font-medium">データベース</h2>
