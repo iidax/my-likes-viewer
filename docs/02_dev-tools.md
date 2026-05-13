@@ -69,7 +69,14 @@ npm install --save-dev jsdom @vitejs/plugin-react \
 ### 設定ファイルの生成
 
 ```shell
+# .oxfmtrc.json を生成
 npx oxfmt --init
+```
+
+markdown ファイルは対象外とする
+
+```json
+"ignorePatterns": ["**/*.md"]
 ```
 
 ### npm scripts
