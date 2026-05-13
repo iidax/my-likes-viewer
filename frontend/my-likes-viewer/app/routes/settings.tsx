@@ -30,9 +30,7 @@ export default function Settings() {
 
       <div className="flex flex-col gap-2">
         <h2 className="text-sm font-medium">データベース</h2>
-        <p className="text-xs text-gray-500">
-          ローカルのいいねデータをすべて削除します。
-        </p>
+        <p className="text-xs text-gray-500">ローカルのいいねデータをすべて削除します。</p>
         <button
           onClick={handleClearDb}
           disabled={clearing}

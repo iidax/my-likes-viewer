@@ -6,10 +6,7 @@ import { getDb } from "./client";
 
 export async function getOembedCache(tweetId: string): Promise<string | null> {
   const db = await getDb();
-  const row = await db.selectObject(
-    "SELECT html FROM oembed_cache WHERE tweet_id = ?",
-    [tweetId],
-  );
+  const row = await db.selectObject("SELECT html FROM oembed_cache WHERE tweet_id = ?", [tweetId]);
   return (row?.html as string) ?? null;
 }
 

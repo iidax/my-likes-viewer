@@ -27,8 +27,8 @@ const steps = [
         <Link to="/upload" className="text-blue-600 underline hover:text-blue-800">
           アップロードページ
         </Link>{" "}
-        で <code className="rounded bg-gray-100 px-1 text-xs">likes.js</code> をアップロードしましょう。
-        解析はブラウザ上で行われます。
+        で <code className="rounded bg-gray-100 px-1 text-xs">likes.js</code>{" "}
+        をアップロードしましょう。 解析はブラウザ上で行われます。
       </>
     ),
   },

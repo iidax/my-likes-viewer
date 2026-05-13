@@ -18,7 +18,9 @@ export function parseLikesJS(content: string): Like[] {
   try {
     raw = JSON.parse(content.slice(start, end));
   } catch {
-    throw new Error("likes.js の JSON 解析に失敗しました。ファイルが壊れていないか確認してください。");
+    throw new Error(
+      "likes.js の JSON 解析に失敗しました。ファイルが壊れていないか確認してください。",
+    );
   }
 
   try {
@@ -30,6 +32,8 @@ export function parseLikesJS(content: string): Like[] {
       likeOrder: index,
     }));
   } catch {
-    throw new Error("likes.js の構造が想定と異なります。X のデータアーカイブに含まれる data/like.js を選択してください。");
+    throw new Error(
+      "likes.js の構造が想定と異なります。X のデータアーカイブに含まれる data/like.js を選択してください。",
+    );
   }
 }

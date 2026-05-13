@@ -55,9 +55,7 @@ export default function Upload() {
         await loadTablePage(0);
         if (isFirst) setShowDialog(true);
       } catch (err) {
-        setErrorMsg(
-          err instanceof Error ? err.message : "予期しないエラーが発生しました",
-        );
+        setErrorMsg(err instanceof Error ? err.message : "予期しないエラーが発生しました");
         setStatus("error");
       }
     };
@@ -74,8 +72,7 @@ export default function Upload() {
       <h1 className="mb-2 text-xl font-semibold">likes.js をアップロード</h1>
       <p className="mb-3 text-sm text-gray-500">
         X のデータアーカイブに含まれる{" "}
-        <code className="rounded bg-gray-100 px-1">data/like.js</code>{" "}
-        を選択してください。
+        <code className="rounded bg-gray-100 px-1">data/like.js</code> を選択してください。
       </p>
       <details className="mb-6 text-sm text-gray-500">
         <summary className="cursor-pointer select-none hover:text-gray-700">
@@ -107,9 +104,7 @@ export default function Upload() {
         />
       </label>
 
-      {status === "error" && (
-        <p className="mt-4 text-sm text-red-500">{errorMsg}</p>
-      )}
+      {status === "error" && <p className="mt-4 text-sm text-red-500">{errorMsg}</p>}
 
       {tableData.length > 0 && (
         <section className="mt-10">
@@ -134,9 +129,7 @@ export default function Upload() {
       {showDialog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="w-80 rounded-xl bg-white p-6 shadow-xl dark:bg-gray-800">
-            <p className="mb-1 text-base font-semibold dark:text-gray-100">
-              アップロード完了
-            </p>
+            <p className="mb-1 text-base font-semibold dark:text-gray-100">アップロード完了</p>
             <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
               トップページで「いいね」一覧を閲覧できます。
             </p>

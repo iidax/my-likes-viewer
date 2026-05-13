@@ -15,12 +15,8 @@ const migrations = Object.entries(modules)
   .sort((a, b) => a.version - b.version);
 
 export function runMigrations(db: DB): void {
-  db.exec(
-    "CREATE TABLE IF NOT EXISTS _schema_version (version INTEGER NOT NULL)",
-  );
-  const row = db.selectObject(
-    "SELECT COALESCE(MAX(version), 0) as v FROM _schema_version",
-  );
+  db.exec("CREATE TABLE IF NOT EXISTS _schema_version (version INTEGER NOT NULL)");
+  const row = db.selectObject("SELECT COALESCE(MAX(version), 0) as v FROM _schema_version");
   let current = row.v as number;
 
   if (current > 0) {

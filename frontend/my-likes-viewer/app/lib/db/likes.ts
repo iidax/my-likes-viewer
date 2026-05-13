@@ -27,8 +27,14 @@ export async function countLikes(fromDate?: number, untilDate?: number): Promise
   const db = await getDb();
   const conditions: string[] = [];
   const params: number[] = [];
-  if (fromDate != null) { conditions.push("tweeted_at >= ?"); params.push(fromDate); }
-  if (untilDate != null) { conditions.push("tweeted_at <= ?"); params.push(untilDate); }
+  if (fromDate != null) {
+    conditions.push("tweeted_at >= ?");
+    params.push(fromDate);
+  }
+  if (untilDate != null) {
+    conditions.push("tweeted_at <= ?");
+    params.push(untilDate);
+  }
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
   const row = await db.selectObject(
     `SELECT COUNT(*) as count FROM likes ${where}`,
@@ -44,8 +50,14 @@ export async function queryLikes(opts: LikeQueryOptions): Promise<Like[]> {
 
   const conditions: string[] = [];
   const params: (number | string)[] = [];
-  if (opts.fromDate != null) { conditions.push("tweeted_at >= ?"); params.push(opts.fromDate); }
-  if (opts.untilDate != null) { conditions.push("tweeted_at <= ?"); params.push(opts.untilDate); }
+  if (opts.fromDate != null) {
+    conditions.push("tweeted_at >= ?");
+    params.push(opts.fromDate);
+  }
+  if (opts.untilDate != null) {
+    conditions.push("tweeted_at <= ?");
+    params.push(opts.untilDate);
+  }
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
 
   const rows = await db.selectObjects(

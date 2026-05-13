@@ -33,7 +33,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                isActive
+                  ? "text-blue-600 dark:text-blue-400"
+                  : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
               }
             >
               トップ
@@ -41,7 +43,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <NavLink
               to="/upload"
               className={({ isActive }) =>
-                isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                isActive
+                  ? "text-blue-600 dark:text-blue-400"
+                  : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
               }
             >
               アップロード
@@ -49,7 +53,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <NavLink
               to="/settings"
               className={({ isActive }) =>
-                isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                isActive
+                  ? "text-blue-600 dark:text-blue-400"
+                  : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
               }
             >
               設定
@@ -74,8 +80,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404 Not Found" : "Error";
-    details =
-      error.status === 404 ? "ページが見つかりません。" : error.statusText;
+    details = error.status === 404 ? "ページが見つかりません。" : error.statusText;
   } else if (import.meta.env.DEV && error instanceof Error) {
     details = error.message;
   }

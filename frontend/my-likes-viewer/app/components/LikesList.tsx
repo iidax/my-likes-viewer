@@ -7,9 +7,7 @@ interface Props {
 
 export function LikesList({ likes }: Props) {
   if (likes.length === 0) {
-    return (
-      <p className="py-8 text-center text-gray-400">表示するいいねがありません</p>
-    );
+    return <p className="py-8 text-center text-gray-400">表示するいいねがありません</p>;
   }
 
   return (

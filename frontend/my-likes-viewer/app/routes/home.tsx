@@ -38,12 +38,15 @@ export default function Home() {
       if (ms == null) return;
       const iso = new Date(ms).toISOString().slice(0, 10);
       setDefaultFromDate(iso);
-      setSearchParams((prev) => {
-        if (prev.has("from")) return prev;
-        const next = new URLSearchParams(prev);
-        next.set("from", iso);
-        return next;
-      }, { replace: true });
+      setSearchParams(
+        (prev) => {
+          if (prev.has("from")) return prev;
+          const next = new URLSearchParams(prev);
+          next.set("from", iso);
+          return next;
+        },
+        { replace: true },
+      );
     });
   }, []);
 
@@ -81,7 +84,11 @@ export default function Home() {
   const handleFromChange = (value: string) => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
-      if (value) { next.set("from", value); } else { next.delete("from"); }
+      if (value) {
+        next.set("from", value);
+      } else {
+        next.delete("from");
+      }
       next.set("page", "0");
       return next;
     });
@@ -90,7 +97,11 @@ export default function Home() {
   const handleUntilChange = (value: string) => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
-      if (value) { next.set("until", value); } else { next.delete("until"); }
+      if (value) {
+        next.set("until", value);
+      } else {
+        next.delete("until");
+      }
       next.set("page", "0");
       return next;
     });

@@ -156,58 +156,17 @@ frontend/my-likes-viewer/app/
 ```json
 {
   "scripts": {
-    "dev":          "npm run dev -w frontend/my-likes-viewer",
-    "build":        "npm run build -w frontend/my-likes-viewer",
-    "typecheck":    "npm run typecheck -w frontend/my-likes-viewer",
-    "lint":         "oxlint ./frontend/my-likes-viewer/app",
-    "format":       "oxformat ./frontend/my-likes-viewer/app",
-    "format:check": "oxformat --check ./frontend/my-likes-viewer/app",
-    "test":         "vitest run --config ./frontend/my-likes-viewer/vitest.config.ts",
-    "test:watch":   "vitest     --config ./frontend/my-likes-viewer/vitest.config.ts",
-    "test:ui":      "vitest --ui --config ./frontend/my-likes-viewer/vitest.config.ts"
+    "dev:frontend":          "npm run dev -w frontend/my-likes-viewer",
+    "build:frontend":        "npm run build -w frontend/my-likes-viewer",
+    "typecheck:frontend":    "npm run typecheck -w frontend/my-likes-viewer",
+    "lint":                  "oxlint .",
+    "format":                "oxfmt .",
+    "format:check":          "oxfmt --check .",
+    "test":                  "vitest run --config ./frontend/my-likes-viewer/vitest.config.ts",
+    "test:watch":            "vitest     --config ./frontend/my-likes-viewer/vitest.config.ts",
+    "test:ui":               "vitest --ui --config ./frontend/my-likes-viewer/vitest.config.ts"
   }
 }
 ```
 
 ---
-
-## 追加提案
-
-### lint-staged + husky（プレコミットフック）
-
-コミット前に lint・format チェックを自動実行します。
-
-```bash
-npm install --save-dev husky lint-staged
-npx husky init
-```
-
-`.husky/pre-commit` に以下を記述します。
-
-```sh
-npx lint-staged
-```
-
-ルートの `package.json` に設定を追記します。
-
-```json
-"lint-staged": {
-  "frontend/my-likes-viewer/app/**/*.{ts,tsx}": [
-    "oxformat --check",
-    "oxlint"
-  ]
-}
-```
-
-### VSCode 設定
-
-`.vscode/settings.json` に以下を追記すると、保存時に自動フォーマットされます。
-
-```json
-{
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "oxc.oxformat"
-}
-```
-
-oxlint の VSCode 拡張は `oxc.oxc-vscode` です。
