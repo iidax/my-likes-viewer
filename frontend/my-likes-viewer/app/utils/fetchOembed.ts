@@ -82,7 +82,8 @@ export async function fetchOembed(tweetId: string): Promise<OembedResult> {
     _memCache.set(tweetId, data.html);
     return { html: data.html, reason: "ok" };
   } catch {
-    // ネットワークエラー等の一時的な失敗はキャッシュしない
+    // CORS ブロックを含むネットワークエラー。同セッション内で再試行しないようキャッシュする
+    _unavailableCache.add(tweetId);
     return { html: null, reason: "error" };
   } finally {
     releaseSlot();
