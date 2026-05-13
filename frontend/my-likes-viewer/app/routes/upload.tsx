@@ -1,6 +1,9 @@
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router";
-import { insertLikes } from "../lib/db/likes";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
+import { LikesTable } from "../components/LikesTable";
+import { UPLOAD_PAGE_SIZE } from "../constants";
+import { countLikes, hasLikes, insertLikes, queryLikes } from "../lib/db/likes";
+import type { Like } from "../types";
 import { parseLikesJS } from "../utils/parseLikesJS";
 
 export function meta() {
@@ -8,10 +11,29 @@ export function meta() {
 }
 
 export default function Upload() {
-  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+
+  const [tableData, setTableData] = useState<Like[]>([]);
+  const [tablePage, setTablePage] = useState(0);
+  const [tableTotal, setTableTotal] = useState(0);
+
+  const loadTablePage = useCallback(async (page: number) => {
+    const [rows, count] = await Promise.all([
+      queryLikes({ page, pageSize: UPLOAD_PAGE_SIZE }),
+      countLikes(),
+    ]);
+    setTableData(rows);
+    setTableTotal(count);
+    setTablePage(page);
+  }, []);
+
+  useEffect(() => {
+    hasLikes().then((has) => {
+      if (has) loadTablePage(0);
+    });
+  }, [loadTablePage]);
 
   const handleFile = (file: File) => {
     setStatus("loading");
@@ -21,7 +43,8 @@ export default function Upload() {
         const content = e.target?.result as string;
         const likes = parseLikesJS(content);
         await insertLikes(likes);
-        navigate("/");
+        setStatus("idle");
+        await loadTablePage(0);
       } catch (err) {
         setErrorMsg(
           err instanceof Error ? err.message : "予期しないエラーが発生しました",
@@ -38,7 +61,7 @@ export default function Upload() {
   };
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-10">
+    <main className="mx-auto max-w-4xl px-4 py-10">
       <h1 className="mb-2 text-xl font-semibold">likes.js をアップロード</h1>
       <p className="mb-6 text-sm text-gray-500">
         X のデータアーカイブに含まれる{" "}
@@ -62,6 +85,25 @@ export default function Upload() {
 
       {status === "error" && (
         <p className="mt-4 text-sm text-red-500">{errorMsg}</p>
+      )}
+
+      {tableData.length > 0 && (
+        <section className="mt-10">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-base font-semibold text-gray-800">
+              {tableTotal.toLocaleString()} 件のデータが読み込まれています
+            </h2>
+            <Link to="/" className="text-sm text-blue-600 hover:text-blue-800">
+              一覧ページで見る →
+            </Link>
+          </div>
+          <LikesTable
+            likes={tableData}
+            page={tablePage}
+            totalPages={Math.ceil(tableTotal / UPLOAD_PAGE_SIZE)}
+            onPageChange={loadTablePage}
+          />
+        </section>
       )}
     </main>
   );

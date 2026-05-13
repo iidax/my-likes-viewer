@@ -5,13 +5,12 @@ import { DateFilter } from "../components/DateFilter";
 import { LikesList } from "../components/LikesList";
 import { Pagination } from "../components/Pagination";
 import { countLikes, getOldestTweetDate, queryLikes } from "../lib/db/likes";
+import { HOME_PAGE_SIZE } from "../constants";
 import type { Like } from "../types";
 
 export function meta() {
   return [{ title: "My Likes Viewer" }];
 }
-
-const PAGE_SIZE = 12;
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -41,12 +40,12 @@ export default function Home() {
   const effectiveFromStr = fromDateStr || defaultFromDate;
   const fromDate = effectiveFromStr ? new Date(effectiveFromStr).getTime() : undefined;
   const untilDate = untilDateStr ? new Date(untilDateStr + "T23:59:59").getTime() : undefined;
-  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(totalCount / HOME_PAGE_SIZE));
 
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      queryLikes({ page, fromDate, untilDate, pageSize: PAGE_SIZE }),
+      queryLikes({ page, fromDate, untilDate, pageSize: HOME_PAGE_SIZE }),
       countLikes(fromDate, untilDate),
     ]).then(([rows, count]) => {
       setLikes(rows);
