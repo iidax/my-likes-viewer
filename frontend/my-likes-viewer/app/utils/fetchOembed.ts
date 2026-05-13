@@ -2,6 +2,10 @@ import { getOembedCache, setOembedCache } from "../lib/db/oembed";
 
 const _memCache = new Map<string, string>();
 
+export function clearOembedMemCache(): void {
+  _memCache.clear();
+}
+
 let _active = 0;
 const MAX_CONCURRENT = 3;
 const _queue: Array<() => void> = [];

@@ -49,6 +49,7 @@ self.addEventListener("message", (e: Event) => {
       });
       (self as unknown as Worker).postMessage({ id, ok: true, row });
     } else if (type === "clearDb") {
+      db.exec("DELETE FROM oembed_cache");
       db.exec("DELETE FROM media");
       db.exec("DELETE FROM likes");
       (self as unknown as Worker).postMessage({ id, ok: true });

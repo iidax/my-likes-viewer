@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getDb } from "../lib/db/client";
+import { clearOembedMemCache } from "../utils/fetchOembed";
 
 const LS_KEY = "x_bearer_token";
 
@@ -19,6 +20,7 @@ export default function Settings() {
     try {
       const db = await getDb();
       await db.clearDb();
+      clearOembedMemCache();
       setCleared(true);
       setTimeout(() => setCleared(false), 2000);
     } finally {
