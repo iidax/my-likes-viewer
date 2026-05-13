@@ -16,11 +16,26 @@ const _readyPromise = new Promise<void>((res, rej) => {
   _readyReject = rej;
 });
 
+function rejectAllPending(err: Error) {
+  for (const { reject } of _pending.values()) reject(err);
+  _pending.clear();
+}
+
+function terminateWorker() {
+  if (_worker) {
+    _worker.terminate();
+    _worker = null;
+  }
+  rejectAllPending(new Error("Worker terminated"));
+}
+
 function getWorker(): Worker {
   if (_worker) return _worker;
   _worker = new DbWorker();
   _worker.onerror = (e) => {
-    _readyReject?.(new Error(e.message));
+    const err = new Error(e.message);
+    _readyReject?.(err);
+    rejectAllPending(err);
   };
   _worker.onmessage = (e: MessageEvent<WorkerResponse>) => {
     const msg = e.data;
@@ -39,6 +54,14 @@ function getWorker(): Worker {
     }
   };
   return _worker;
+}
+
+// ページアンロード時に OPFS ハンドルを解放する
+window.addEventListener("beforeunload", terminateWorker);
+
+// HMR でモジュールが再評価される前に旧ワーカーを終了し、OPFS の二重ロックを防ぐ
+if (import.meta.hot) {
+  import.meta.hot.dispose(terminateWorker);
 }
 
 let _counter = 0;

@@ -122,7 +122,7 @@ window.YTD.like.part0 = [
 - sqlite3: wasm
 - typescript
 
-## 立ち上げ手順
+## 開発手順
 
 1. 以下のコマンドを実行して、開発サーバーを起動する
 
@@ -130,3 +130,9 @@ window.YTD.like.part0 = [
 npm run dev:frontend
 ```
 
+2. フォーマットと lint をかける
+
+```bash
+npm run format
+npm run lint
+```
