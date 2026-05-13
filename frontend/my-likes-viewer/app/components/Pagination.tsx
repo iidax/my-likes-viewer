@@ -108,12 +108,17 @@ export function Pagination({ page, totalPages, onPageChange, dotDates }: Props) 
           return (
             <div key={i} className="group relative flex items-center justify-center">
               {/* ツールチップ: PCはホバー時、スマホはタッチスライド時に表示 */}
-              <div className={`pointer-events-none absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-0.5 text-xs text-white transition-opacity duration-75 dark:bg-gray-600 group-hover:opacity-100 ${touchActiveDot === i ? "opacity-100" : "opacity-0"}`}>
+              <div
+                className={`pointer-events-none absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-0.5 text-xs text-white transition-opacity duration-75 dark:bg-gray-600 group-hover:opacity-100 ${touchActiveDot === i ? "opacity-100" : "opacity-0"}`}
+              >
                 {tooltipText}
               </div>
               <button
                 type="button"
-                onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); onPageChange(targetPage); }}
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  onPageChange(targetPage);
+                }}
                 className={`rounded-full transition-all hover:scale-150 hover:bg-blue-400 dark:hover:bg-blue-400 ${sizeClass} ${colorClass}`}
               />
             </div>
@@ -124,7 +129,10 @@ export function Pagination({ page, totalPages, onPageChange, dotDates }: Props) 
       <div className="flex items-center gap-3">
         <button
           disabled={page === 0}
-          onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); onPageChange(page - 1); }}
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            onPageChange(page - 1);
+          }}
           className="rounded border px-3 py-1 text-sm disabled:opacity-40 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
         >
           ← 前へ
@@ -147,7 +155,10 @@ export function Pagination({ page, totalPages, onPageChange, dotDates }: Props) 
 
         <button
           disabled={page >= totalPages - 1}
-          onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); onPageChange(page + 1); }}
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            onPageChange(page + 1);
+          }}
           className="rounded border px-3 py-1 text-sm disabled:opacity-40 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
         >
           次へ →
