@@ -6,8 +6,16 @@
     "frontend/my-likes-viewer"
   ],
   "scripts": {
-    "dev": "npm run dev -w frontend/my-likes-viewer",
-    "build": "npm run build -w frontend/my-likes-viewer",
-    "typecheck": "npm run typecheck -w frontend/my-likes-viewer"
+    "dev:frontend": "npm run dev -w frontend/my-likes-viewer",
+    "build:frontend": "npm run build -w frontend/my-likes-viewer",
+    "typecheck:frontend": "npm run typecheck -w frontend/my-likes-viewer",
+    "lint": "oxlint .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check ."
+  },
+  "devDependencies": {
+    "oxfmt": "^0.48.0",
+    "oxlint": "^1.63.0",
+    "vitest": "^4.1.5"
   }
 }

@@ -39,7 +39,7 @@ jobs:
 
       # 型チェック
       - name: Type check
-        run: npm run typecheck
+        run: npm run typecheck:frontend
 
   # codeql:
   #   name: CodeQL Analysis
@@ -78,7 +78,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: npm run build:frontend
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
