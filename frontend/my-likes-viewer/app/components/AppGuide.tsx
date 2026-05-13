@@ -56,6 +56,39 @@ export function AppGuide() {
           </li>
         ))}
       </ol>
+
+      <details className="mt-4 border-t pt-3 text-xs text-gray-500">
+        <summary className="cursor-pointer select-none font-medium text-gray-600 hover:text-gray-800">
+          likes.js とは？
+        </summary>
+        <div className="mt-2 space-y-2 leading-relaxed">
+          <p>
+            X（旧 Twitter）の{" "}
+            <a
+              href="https://x.com/settings/download_your_data"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline hover:text-blue-800"
+            >
+              データのアーカイブ
+            </a>{" "}
+            をリクエスト・ダウンロードすると、ZIP ファイルの中に{" "}
+            <code className="rounded bg-gray-100 px-1">data/like.js</code>{" "}
+            が含まれています。このファイルには、これまで「いいね」したすべてのツイートの ID・本文・URL が記録されています。
+          </p>
+          <p>ファイルの形式は以下の通りです：</p>
+          <pre className="overflow-x-auto rounded-lg bg-gray-50 p-3 leading-relaxed text-gray-600">{`window.YTD.like.part0 = [
+  {
+    "like": {
+      "tweetId": "1234567890123456789",
+      "fullText": "ツイートのテキスト内容",
+      "expandedUrl": "https://twitter.com/i/web/status/1234567890123456789"
+    }
+  },
+  ...
+]`}</pre>
+        </div>
+      </details>
     </section>
   );
 }

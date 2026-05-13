@@ -40,7 +40,7 @@ data/
 
 ### STEP2: 「いいね」のデータを解析する
 
-1. 本ウェブサイトの[アップロードページ](https://iidax.github.io/my-likes-viewer/upload)にアクセスします。
+1. 本ウェブサイト[トップページ](https://iidax.github.io/my-likes-viewer/)もしくは[アップロードページ](https://iidax.github.io/my-likes-viewer/upload)にアクセスします。
 2. STEP1で控えた`data/like.js`をアプリにアップロードします。
 
 ![アップロードのページ](<docs/images/screen_shot_ 2026-05-13_02.png>)
