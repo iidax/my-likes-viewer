@@ -113,7 +113,7 @@ export function Pagination({ page, totalPages, onPageChange, dotDates }: Props) 
               </div>
               <button
                 type="button"
-                onClick={() => onPageChange(targetPage)}
+                onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); onPageChange(targetPage); }}
                 className={`rounded-full transition-all hover:scale-150 hover:bg-blue-400 dark:hover:bg-blue-400 ${sizeClass} ${colorClass}`}
               />
             </div>
@@ -124,7 +124,7 @@ export function Pagination({ page, totalPages, onPageChange, dotDates }: Props) 
       <div className="flex items-center gap-3">
         <button
           disabled={page === 0}
-          onClick={() => onPageChange(page - 1)}
+          onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); onPageChange(page - 1); }}
           className="rounded border px-3 py-1 text-sm disabled:opacity-40 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
         >
           ← 前へ
@@ -147,7 +147,7 @@ export function Pagination({ page, totalPages, onPageChange, dotDates }: Props) 
 
         <button
           disabled={page >= totalPages - 1}
-          onClick={() => onPageChange(page + 1)}
+          onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); onPageChange(page + 1); }}
           className="rounded border px-3 py-1 text-sm disabled:opacity-40 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
         >
           次へ →

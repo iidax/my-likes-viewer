@@ -63,7 +63,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </nav>
         </header>
         {children}
-        <ScrollRestoration />
+        {/* pathname のみをキーにすることで、ページネーション（searchParams変化）では
+            スクロール位置を自動復元せず、手動のスムーズスクロールが効くようにする */}
+        <ScrollRestoration getKey={(location) => location.pathname} />
         <Scripts />
       </body>
     </html>
