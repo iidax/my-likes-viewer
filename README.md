@@ -59,6 +59,9 @@ data/
 
 ```
 root/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml             # GitHub Pagesへのデプロイのワークフロー
 ├── data/                          # 自分のXのデータのアーカイブを配置するなどご自由にお使いください。
 ├── docs/                          # 設計に関するファイルなど
 ├── frontend/my-likes-viewer/      # フロントエンド
@@ -77,6 +80,7 @@ root/
 
 本アプリは、likes.jsを読み込んで、時期を指定して「いいね」を表示することを目指す。
 
+SPAで実装し、github pagesで公開する。
 
 ### インターフェース
 - ユーザーは`likes.js`をアップロードする
