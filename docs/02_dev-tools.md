@@ -66,6 +66,12 @@ npm install --save-dev jsdom @vitejs/plugin-react \
 
 ## oxfmt
 
+### 設定ファイルの生成
+
+```shell
+npx oxfmt --init
+```
+
 ### npm scripts
 
 ```json
