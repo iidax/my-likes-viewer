@@ -26,14 +26,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <script async src="https://platform.twitter.com/widgets.js" />
       </head>
-      <body className="min-h-screen overflow-x-hidden bg-gray-50 text-gray-900">
-        <header className="border-b bg-white px-4 py-3">
+      <body className="min-h-screen overflow-x-hidden bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+        <header className="border-b bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-950">
           <nav className="mx-auto flex max-w-2xl items-center gap-6">
             <span className="font-semibold">My Likes Viewer</span>
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive ? "text-blue-600" : "text-gray-600 hover:text-gray-900"
+                isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
               }
             >
               一覧
@@ -41,7 +41,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <NavLink
               to="/upload"
               className={({ isActive }) =>
-                isActive ? "text-blue-600" : "text-gray-600 hover:text-gray-900"
+                isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
               }
             >
               アップロード
@@ -49,7 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <NavLink
               to="/settings"
               className={({ isActive }) =>
-                isActive ? "text-blue-600" : "text-gray-600 hover:text-gray-900"
+                isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
               }
             >
               設定
@@ -83,7 +83,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <main className="mx-auto max-w-2xl p-8">
       <h1 className="text-xl font-bold">{message}</h1>
-      <p className="mt-2 text-gray-600">{details}</p>
+      <p className="mt-2 text-gray-600 dark:text-gray-400">{details}</p>
     </main>
   );
 }

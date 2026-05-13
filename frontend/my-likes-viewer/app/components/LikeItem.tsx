@@ -33,8 +33,8 @@ function TweetText({ text }: { text: string }) {
 function StatusBadge({ label, color }: { label: string; color: "yellow" | "red" }) {
   const cls =
     color === "yellow"
-      ? "bg-yellow-100 text-yellow-700"
-      : "bg-red-100 text-red-600";
+      ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+      : "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400";
   return (
     <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${cls}`}>
       {label}
@@ -88,8 +88,8 @@ export function LikeItem({ like }: Props) {
   }, [html]);
 
   return (
-    <article ref={ref} className="overflow-hidden rounded-lg border bg-white p-4">
-      <div className="mb-2 flex items-center justify-between text-xs text-gray-400">
+    <article ref={ref} className="overflow-hidden rounded-lg border bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+      <div className="mb-2 flex items-center justify-between text-xs text-gray-400 dark:text-gray-500">
         <time dateTime={date.toISOString()}>{dateLabel}</time>
         <div className="flex items-center gap-2">
           {textStatus === "suspended" && (
@@ -107,7 +107,7 @@ export function LikeItem({ like }: Props) {
           className="overflow-hidden"
         />
       ) : loading ? (
-        <div className="h-20 animate-pulse rounded bg-gray-100" />
+        <div className="h-20 animate-pulse rounded bg-gray-100 dark:bg-gray-700" />
       ) : (
         <p className="whitespace-pre-wrap text-sm leading-relaxed">
           <TweetText text={like.fullText} />

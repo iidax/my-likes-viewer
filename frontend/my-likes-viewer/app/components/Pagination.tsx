@@ -26,24 +26,24 @@ export function Pagination({ page, totalPages, onPageChange }: Props) {
       <button
         disabled={page === 0}
         onClick={() => onPageChange(page - 1)}
-        className="rounded border px-3 py-1 text-sm disabled:opacity-40"
+        className="rounded border px-3 py-1 text-sm disabled:opacity-40 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
       >
         ← 前へ
       </button>
 
-      <span className="text-sm text-gray-600">
+      <span className="text-sm text-gray-600 dark:text-gray-400">
         {page + 1} / {totalPages}
       </span>
 
       <button
         disabled={page >= totalPages - 1}
         onClick={() => onPageChange(page + 1)}
-        className="rounded border px-3 py-1 text-sm disabled:opacity-40"
+        className="rounded border px-3 py-1 text-sm disabled:opacity-40 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
       >
         次へ →
       </button>
 
-      <div className="flex items-center gap-1 border-l pl-3">
+      <div className="flex items-center gap-1 border-l pl-3 dark:border-gray-600">
         <input
           type="number"
           min={1}
@@ -52,11 +52,11 @@ export function Pagination({ page, totalPages, onPageChange }: Props) {
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={String(page + 1)}
-          className="w-16 rounded border px-2 py-1 text-center text-sm"
+          className="w-16 rounded border px-2 py-1 text-center text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
         />
         <button
           onClick={jump}
-          className="rounded border px-2 py-1 text-sm hover:bg-gray-100"
+          className="rounded border px-2 py-1 text-sm hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
         >
           移動
         </button>

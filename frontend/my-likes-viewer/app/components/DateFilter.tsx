@@ -8,7 +8,7 @@ interface Props {
 export function DateFilter({ fromValue, untilValue, onFromChange, onUntilChange }: Props) {
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <label htmlFor="from-date" className="text-sm text-gray-600">
+      <label htmlFor="from-date" className="text-sm text-gray-600 dark:text-gray-400">
         この日付以降
       </label>
       <input
@@ -16,17 +16,17 @@ export function DateFilter({ fromValue, untilValue, onFromChange, onUntilChange 
         type="date"
         value={fromValue}
         onChange={(e) => onFromChange(e.target.value)}
-        className="rounded border px-2 py-1 text-sm"
+        className="rounded border px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
       />
       {fromValue && (
         <button
           onClick={() => onFromChange("")}
-          className="text-sm text-gray-400 hover:text-gray-600"
+          className="text-sm text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
         >
           クリア
         </button>
       )}
-      <label htmlFor="until-date" className="text-sm text-gray-600">
+      <label htmlFor="until-date" className="text-sm text-gray-600 dark:text-gray-400">
         この日付以前
       </label>
       <input
@@ -34,12 +34,12 @@ export function DateFilter({ fromValue, untilValue, onFromChange, onUntilChange 
         type="date"
         value={untilValue}
         onChange={(e) => onUntilChange(e.target.value)}
-        className="rounded border px-2 py-1 text-sm"
+        className="rounded border px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
       />
       {untilValue && (
         <button
           onClick={() => onUntilChange("")}
-          className="text-sm text-gray-400 hover:text-gray-600"
+          className="text-sm text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
         >
           クリア
         </button>
