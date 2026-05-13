@@ -104,6 +104,7 @@ export default function Upload() {
 
       {tableData.length > 0 && (
         <section className="mt-10">
+          <h1 className="mb-2 text-xl font-semibold">プレビュー</h1>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-base font-semibold text-gray-800">
               {tableTotal.toLocaleString()} 件のデータが読み込まれています

@@ -14,9 +14,9 @@ const steps = [
         >
           データのアーカイブをダウンロード
         </a>{" "}
-        にアクセスし、アーカイブを取得する。届いたファイルの中から{" "}
+        にアクセスし、アーカイブの取得をリクエストしましょう。届いたファイルの中から{" "}
         <code className="rounded bg-gray-100 px-1 text-xs">data/likes.js</code>{" "}
-        を手元に控える。
+        を手元に控えてください。
       </>
     ),
   },
@@ -27,14 +27,14 @@ const steps = [
         <Link to="/upload" className="text-blue-600 underline hover:text-blue-800">
           アップロードページ
         </Link>{" "}
-        で <code className="rounded bg-gray-100 px-1 text-xs">likes.js</code> をアップロードする。
+        で <code className="rounded bg-gray-100 px-1 text-xs">likes.js</code> をアップロードしましょう。
         解析はブラウザ上で行われます。
       </>
     ),
   },
   {
     label: "STEP 3",
-    text: "日付フィルターで期間を絞り込み、過去の「いいね」を閲覧する。",
+    text: "日付フィルターで期間を絞り込み、過去の「いいね」を閲覧できます。",
   },
 ];
 
