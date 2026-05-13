@@ -24,6 +24,7 @@ const steps = [
     label: "STEP 2",
     text: (
       <>
+        トップページの中央付近にあるファイル選択欄もしくは
         <Link to="/upload" className="text-blue-600 underline hover:text-blue-800">
           アップロードページ
         </Link>{" "}
@@ -34,7 +35,7 @@ const steps = [
   },
   {
     label: "STEP 3",
-    text: "日付フィルターで期間を絞り込み、過去の「いいね」を閲覧できます。",
+    text: "日付フィルターで期間を絞り込み、特定の期間の「いいね」を閲覧できます。",
   },
 ];
 
