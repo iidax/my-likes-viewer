@@ -39,46 +39,44 @@ const steps = [
   },
 ];
 
-export function AppGuide() {
-  return (
-    <section className="mb-6 rounded-lg border bg-white px-5 py-4 text-sm text-gray-700 shadow-sm">
-      <p className="mb-3 font-semibold text-gray-900">
-        X（旧 Twitter）の「いいね」を期間指定して閲覧できるWebアプリです。
-        データはすべてブラウザ上で処理されます。
-      </p>
-      <ol className="space-y-1.5">
-        {steps.map(({ label, text }) => (
-          <li key={label} className="flex gap-3">
-            <span className="w-14 shrink-0 rounded bg-blue-50 px-1.5 py-0.5 text-center text-xs font-semibold text-blue-700">
-              {label}
-            </span>
-            <span className="leading-relaxed">{text}</span>
-          </li>
-        ))}
-      </ol>
+const SUMMARY_TEXT =
+  "X（旧 Twitter）の「いいね」を期間指定して閲覧できるWebアプリです。データはすべてブラウザ上で処理されます。";
 
-      <details className="mt-4 border-t pt-3 text-xs text-gray-500">
-        <summary className="cursor-pointer select-none font-medium text-gray-600 hover:text-gray-800">
-          likes.js とは？
-        </summary>
-        <div className="mt-2 space-y-2 leading-relaxed">
-          <p>
-            X（旧 Twitter）の{" "}
-            <a
-              href="https://x.com/settings/download_your_data"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline hover:text-blue-800"
-            >
-              データのアーカイブ
-            </a>{" "}
-            をリクエスト・ダウンロードすると、ZIP ファイルの中に{" "}
-            <code className="rounded bg-gray-100 px-1">data/like.js</code>{" "}
-            が含まれています。このファイルには、これまで「いいね」したすべてのツイートの
-            ID・本文・URL が記録されています。
-          </p>
-          <p>ファイルの形式は以下の通りです：</p>
-          <pre className="overflow-x-auto rounded-lg bg-gray-50 p-3 leading-relaxed text-gray-600">{`window.YTD.like.part0 = [
+const GuideContent = () => (
+  <>
+    <ol className="space-y-1.5">
+      {steps.map(({ label, text }) => (
+        <li key={label} className="flex gap-3">
+          <span className="w-14 shrink-0 rounded bg-blue-50 px-1.5 py-0.5 text-center text-xs font-semibold text-blue-700">
+            {label}
+          </span>
+          <span className="leading-relaxed">{text}</span>
+        </li>
+      ))}
+    </ol>
+
+    <details className="mt-4 border-t pt-3 text-xs text-gray-500">
+      <summary className="cursor-pointer select-none font-medium text-gray-600 hover:text-gray-800">
+        likes.js とは？
+      </summary>
+      <div className="mt-2 space-y-2 leading-relaxed">
+        <p>
+          X（旧 Twitter）の{" "}
+          <a
+            href="https://x.com/settings/download_your_data"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline hover:text-blue-800"
+          >
+            データのアーカイブ
+          </a>{" "}
+          をリクエスト・ダウンロードすると、ZIP ファイルの中に{" "}
+          <code className="rounded bg-gray-100 px-1">data/like.js</code>{" "}
+          が含まれています。このファイルには、これまで「いいね」したすべてのツイートの
+          ID・本文・URL が記録されています。
+        </p>
+        <p>ファイルの形式は以下の通りです：</p>
+        <pre className="overflow-x-auto rounded-lg bg-gray-50 p-3 leading-relaxed text-gray-600">{`window.YTD.like.part0 = [
   {
     "like": {
       "tweetId": "1234567890123456789",
@@ -88,8 +86,29 @@ export function AppGuide() {
   },
   ...
 ]`}</pre>
+      </div>
+    </details>
+  </>
+);
+
+export function AppGuide({ hasLikes = false }: { hasLikes?: boolean }) {
+  if (hasLikes) {
+    return (
+      <details className="mb-6 rounded-lg border bg-white px-5 text-sm text-gray-700 shadow-sm">
+        <summary className="cursor-pointer select-none py-3 font-semibold text-gray-900 hover:text-gray-700">
+          {SUMMARY_TEXT}
+        </summary>
+        <div className="pb-4 pt-3">
+          <GuideContent />
         </div>
       </details>
+    );
+  }
+
+  return (
+    <section className="mb-6 rounded-lg border bg-white px-5 py-4 text-sm text-gray-700 shadow-sm">
+      <p className="mb-3 font-semibold text-gray-900">{SUMMARY_TEXT}</p>
+      <GuideContent />
     </section>
   );
 }

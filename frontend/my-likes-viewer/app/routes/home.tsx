@@ -195,7 +195,7 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-6">
-      <AppGuide />
+      <AppGuide hasLikes={totalCount > 0} />
       <div className="mb-4 flex items-center justify-between">
         <DateFilter
           fromValue={fromDateStr}
@@ -224,7 +224,7 @@ export default function Home() {
             <input
               ref={fileInputRef}
               type="file"
-              accept=".js"
+              accept=".js,text/javascript,application/javascript"
               onChange={(e) => {
                 const f = e.target.files?.[0];
                 if (f) handleUploadFile(f);
