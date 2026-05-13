@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { Like } from "../types";
+import type { OembedResult } from "../utils/fetchOembed";
 import { fetchOembed } from "../utils/fetchOembed";
+import { detectStatusFromText } from "../utils/tweetStatus";
 
 // split with a capturing group: odd indices are URLs, even indices are plain text
 const URL_SPLIT_RE = /(https?:\/\/\S+)/;
@@ -28,6 +30,18 @@ function TweetText({ text }: { text: string }) {
   );
 }
 
+function StatusBadge({ label, color }: { label: string; color: "yellow" | "red" }) {
+  const cls =
+    color === "yellow"
+      ? "bg-yellow-100 text-yellow-700"
+      : "bg-red-100 text-red-600";
+  return (
+    <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${cls}`}>
+      {label}
+    </span>
+  );
+}
+
 interface Props {
   like: Like;
 }
@@ -42,7 +56,10 @@ export function LikeItem({ like }: Props) {
 
   const [html, setHtml] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [oembedReason, setOembedReason] = useState<OembedResult["reason"] | null>(null);
   const ref = useRef<HTMLElement>(null);
+
+  const textStatus = detectStatusFromText(like.fullText);
 
   useEffect(() => {
     const el = ref.current;
@@ -53,7 +70,8 @@ export function LikeItem({ like }: Props) {
         observer.disconnect();
         setLoading(true);
         fetchOembed(like.tweetId).then((result) => {
-          setHtml(result);
+          setHtml(result.html);
+          setOembedReason(result.reason);
           setLoading(false);
         });
       },
@@ -73,7 +91,15 @@ export function LikeItem({ like }: Props) {
     <article ref={ref} className="overflow-hidden rounded-lg border bg-white p-4">
       <div className="mb-2 flex items-center justify-between text-xs text-gray-400">
         <time dateTime={date.toISOString()}>{dateLabel}</time>
-        <span>#{like.likeOrder + 1}</span>
+        <div className="flex items-center gap-2">
+          {textStatus === "suspended" && (
+            <StatusBadge label="凍結アカウント" color="yellow" />
+          )}
+          {textStatus === null && oembedReason === "unavailable" && (
+            <StatusBadge label="制限されたメディア/削除済み / 非公開" color="red" />
+          )}
+          <span>#{like.likeOrder + 1}</span>
+        </div>
       </div>
       {html ? (
         <div
