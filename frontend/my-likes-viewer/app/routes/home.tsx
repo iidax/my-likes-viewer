@@ -208,7 +208,7 @@ export default function Home() {
         <span className="text-sm text-gray-500">{totalCount} 件</span>
       </div>
 
-      {loading ? (
+      {loading && totalCount === 0 ? (
         <p className="py-8 text-center text-gray-400">読み込み中...</p>
       ) : totalCount === 0 ? (
         <div className="mx-auto mt-8 max-w-lg">
@@ -238,7 +238,11 @@ export default function Home() {
       ) : (
         <>
           {pagination && <div className="mb-4">{pagination}</div>}
-          <LikesList likes={likes} />
+          {loading ? (
+            <p className="py-8 text-center text-gray-400">読み込み中...</p>
+          ) : (
+            <LikesList likes={likes} />
+          )}
           {pagination && <div className="mt-6">{pagination}</div>}
         </>
       )}
