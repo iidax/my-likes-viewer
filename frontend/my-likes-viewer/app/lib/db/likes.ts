@@ -86,8 +86,14 @@ export async function getTweetDatesAtOffsets(
   const db = await getDb();
   const conditions: string[] = [];
   const params: number[] = [];
-  if (fromDate != null) { conditions.push("tweeted_at >= ?"); params.push(fromDate); }
-  if (untilDate != null) { conditions.push("tweeted_at <= ?"); params.push(untilDate); }
+  if (fromDate != null) {
+    conditions.push("tweeted_at >= ?");
+    params.push(fromDate);
+  }
+  if (untilDate != null) {
+    conditions.push("tweeted_at <= ?");
+    params.push(untilDate);
+  }
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
   const results = await Promise.all(
     offsets.map((offset) =>

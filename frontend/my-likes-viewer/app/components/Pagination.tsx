@@ -12,9 +12,7 @@ const MAX_DOTS = 20;
 export function computeDotTargetPages(totalPages: number): number[] {
   const numDots = Math.min(totalPages, MAX_DOTS);
   const span = Math.max(numDots - 1, 1);
-  return Array.from({ length: numDots }, (_, i) =>
-    Math.round((i / span) * (totalPages - 1)),
-  );
+  return Array.from({ length: numDots }, (_, i) => Math.round((i / span) * (totalPages - 1)));
 }
 
 export function Pagination({ page, totalPages, onPageChange, dotDates }: Props) {
@@ -45,12 +43,9 @@ export function Pagination({ page, totalPages, onPageChange, dotDates }: Props) 
   const dots = useMemo(() => {
     const targetPages = computeDotTargetPages(totalPages);
     return targetPages.map((targetPage, i) => {
-      const prevBoundary =
-        i === 0 ? 1 : Math.round(((i - 0.5) / span) * (totalPages - 1)) + 1;
+      const prevBoundary = i === 0 ? 1 : Math.round(((i - 0.5) / span) * (totalPages - 1)) + 1;
       const nextBoundary =
-        i === numDots - 1
-          ? totalPages
-          : Math.round(((i + 0.5) / span) * (totalPages - 1));
+        i === numDots - 1 ? totalPages : Math.round(((i + 0.5) / span) * (totalPages - 1));
       const pageLabel =
         prevBoundary === nextBoundary
           ? `${prevBoundary} ページ`

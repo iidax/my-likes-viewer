@@ -32,7 +32,14 @@ function buildPresets(): Preset[] {
   ];
 }
 
-export function DateFilter({ fromValue, untilValue, fromDisplay, onFromChange, onUntilChange, onRangeChange }: Props) {
+export function DateFilter({
+  fromValue,
+  untilValue,
+  fromDisplay,
+  onFromChange,
+  onUntilChange,
+  onRangeChange,
+}: Props) {
   const presets = useMemo(buildPresets, []);
   const activePreset = presets.find((p) => p.from === fromValue && p.until === untilValue) ?? null;
   const displayFrom = fromDisplay ?? fromValue;

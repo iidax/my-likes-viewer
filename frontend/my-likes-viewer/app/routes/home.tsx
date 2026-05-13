@@ -4,7 +4,13 @@ import { AppGuide } from "../components/AppGuide";
 import { DateFilter } from "../components/DateFilter";
 import { LikesList } from "../components/LikesList";
 import { computeDotTargetPages, Pagination } from "../components/Pagination";
-import { countLikes, getOldestTweetDate, getTweetDatesAtOffsets, insertLikes, queryLikes } from "../lib/db/likes";
+import {
+  countLikes,
+  getOldestTweetDate,
+  getTweetDatesAtOffsets,
+  insertLikes,
+  queryLikes,
+} from "../lib/db/likes";
 import { HOME_PAGE_SIZE } from "../constants";
 import type { Like } from "../types";
 import { parseLikesJS } from "../utils/parseLikesJS";
@@ -108,11 +114,14 @@ export default function Home() {
         if (oldest != null) {
           const iso = new Date(oldest).toISOString().slice(0, 10);
           setDefaultFromDate(iso);
-          setSearchParams((prev) => {
-            const next = new URLSearchParams(prev);
-            if (!prev.has("from")) next.set("from", iso);
-            return next;
-          }, { replace: true });
+          setSearchParams(
+            (prev) => {
+              const next = new URLSearchParams(prev);
+              if (!prev.has("from")) next.set("from", iso);
+              return next;
+            },
+            { replace: true },
+          );
         }
         const [rows, count] = await Promise.all([
           queryLikes({ page: 0, fromDate: oldest ?? undefined, pageSize: HOME_PAGE_SIZE }),
@@ -165,8 +174,16 @@ export default function Home() {
   const handleRangeChange = (from: string, until: string) => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
-      if (from) { next.set("from", from); } else { next.delete("from"); }
-      if (until) { next.set("until", until); } else { next.delete("until"); }
+      if (from) {
+        next.set("from", from);
+      } else {
+        next.delete("from");
+      }
+      if (until) {
+        next.set("until", until);
+      } else {
+        next.delete("until");
+      }
       next.set("page", "0");
       return next;
     });
@@ -197,21 +214,26 @@ export default function Home() {
         <div className="mx-auto mt-8 max-w-lg">
           <label className="flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-dashed border-gray-300 p-10 hover:border-blue-400">
             <span className="text-gray-500">
-              {uploadStatus === "loading" ? "読み込み中..." : "like.js をここにドロップ、またはクリックして選択"}
+              {uploadStatus === "loading"
+                ? "読み込み中..."
+                : "like.js をここにドロップ、またはクリックして選択"}
             </span>
-            <span className="text-xs text-gray-400">X のデータアーカイブに含まれる data/like.js</span>
+            <span className="text-xs text-gray-400">
+              X のデータアーカイブに含まれる data/like.js
+            </span>
             <input
               ref={fileInputRef}
               type="file"
               accept=".js"
-              onChange={(e) => { const f = e.target.files?.[0]; if (f) handleUploadFile(f); }}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) handleUploadFile(f);
+              }}
               disabled={uploadStatus === "loading"}
               className="hidden"
             />
           </label>
-          {uploadStatus === "error" && (
-            <p className="mt-3 text-sm text-red-500">{uploadError}</p>
-          )}
+          {uploadStatus === "error" && <p className="mt-3 text-sm text-red-500">{uploadError}</p>}
         </div>
       ) : (
         <>

@@ -74,7 +74,8 @@ export function AppGuide() {
             </a>{" "}
             をリクエスト・ダウンロードすると、ZIP ファイルの中に{" "}
             <code className="rounded bg-gray-100 px-1">data/like.js</code>{" "}
-            が含まれています。このファイルには、これまで「いいね」したすべてのツイートの ID・本文・URL が記録されています。
+            が含まれています。このファイルには、これまで「いいね」したすべてのツイートの
+            ID・本文・URL が記録されています。
           </p>
           <p>ファイルの形式は以下の通りです：</p>
           <pre className="overflow-x-auto rounded-lg bg-gray-50 p-3 leading-relaxed text-gray-600">{`window.YTD.like.part0 = [
