@@ -10,6 +10,8 @@ export function meta() {
   return [{ title: "アップロード | My Likes Viewer" }];
 }
 
+const UPLOAD_PAGE_KEY = "uploadTablePage";
+
 export default function Upload() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
@@ -27,11 +29,14 @@ export default function Upload() {
     setTableData(rows);
     setTableTotal(count);
     setTablePage(page);
+    sessionStorage.setItem(UPLOAD_PAGE_KEY, String(page));
   }, []);
 
   useEffect(() => {
     hasLikes().then((has) => {
-      if (has) loadTablePage(0);
+      if (!has) return;
+      const saved = parseInt(sessionStorage.getItem(UPLOAD_PAGE_KEY) ?? "0");
+      loadTablePage(saved);
     });
   }, [loadTablePage]);
 

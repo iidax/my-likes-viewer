@@ -12,6 +12,8 @@ export function meta() {
   return [{ title: "My Likes Viewer" }];
 }
 
+const SESSION_KEY = "homeSearchParams";
+
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Math.max(0, parseInt(searchParams.get("page") ?? "0"));
@@ -24,6 +26,14 @@ export default function Home() {
   const [defaultFromDate, setDefaultFromDate] = useState("");
 
   useEffect(() => {
+    if (searchParams.size === 0) {
+      const saved = sessionStorage.getItem(SESSION_KEY);
+      if (saved) {
+        setSearchParams(new URLSearchParams(saved), { replace: true });
+        return;
+      }
+    }
+
     getOldestTweetDate().then((ms) => {
       if (ms == null) return;
       const iso = new Date(ms).toISOString().slice(0, 10);
@@ -36,6 +46,12 @@ export default function Home() {
       }, { replace: true });
     });
   }, []);
+
+  useEffect(() => {
+    if (searchParams.size > 0) {
+      sessionStorage.setItem(SESSION_KEY, searchParams.toString());
+    }
+  }, [searchParams]);
 
   const effectiveFromStr = fromDateStr || defaultFromDate;
   const fromDate = effectiveFromStr ? new Date(effectiveFromStr).getTime() : undefined;
