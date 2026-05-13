@@ -97,7 +97,7 @@ export default function Upload() {
         <input
           ref={inputRef}
           type="file"
-          accept=".js"
+          accept=".js,text/javascript,application/javascript"
           onChange={handleChange}
           disabled={status === "loading"}
           className="hidden"
