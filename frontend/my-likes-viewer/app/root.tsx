@@ -36,7 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
               }
             >
-              一覧
+              トップ
             </NavLink>
             <NavLink
               to="/upload"

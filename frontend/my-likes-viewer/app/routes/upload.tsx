@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { LikesTable } from "../components/LikesTable";
 import { UPLOAD_PAGE_SIZE } from "../constants";
 import { countLikes, hasLikes, insertLikes, queryLikes } from "../lib/db/likes";
@@ -13,9 +13,11 @@ export function meta() {
 const UPLOAD_PAGE_KEY = "uploadTablePage";
 
 export default function Upload() {
+  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [showDialog, setShowDialog] = useState(false);
 
   const [tableData, setTableData] = useState<Like[]>([]);
   const [tablePage, setTablePage] = useState(0);
@@ -47,9 +49,11 @@ export default function Upload() {
       try {
         const content = e.target?.result as string;
         const likes = parseLikesJS(content);
+        const isFirst = tableTotal === 0;
         await insertLikes(likes);
         setStatus("idle");
         await loadTablePage(0);
+        if (isFirst) setShowDialog(true);
       } catch (err) {
         setErrorMsg(
           err instanceof Error ? err.message : "予期しないエラーが発生しました",
@@ -115,7 +119,7 @@ export default function Upload() {
               {tableTotal.toLocaleString()} 件のデータが読み込まれています
             </h2>
             <Link to="/" className="text-sm text-blue-600 hover:text-blue-800">
-              一覧ページで見る →
+              トップページで見る →
             </Link>
           </div>
           <LikesTable
@@ -125,6 +129,33 @@ export default function Upload() {
             onPageChange={loadTablePage}
           />
         </section>
+      )}
+
+      {showDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="w-80 rounded-xl bg-white p-6 shadow-xl dark:bg-gray-800">
+            <p className="mb-1 text-base font-semibold dark:text-gray-100">
+              アップロード完了
+            </p>
+            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
+              トップページで「いいね」一覧を閲覧できます。
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowDialog(false)}
+                className="rounded-lg border px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+              >
+                このまま表示を閉じる
+              </button>
+              <button
+                onClick={() => navigate("/")}
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+              >
+                トップページへ移動
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </main>
   );
