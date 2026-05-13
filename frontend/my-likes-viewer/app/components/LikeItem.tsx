@@ -78,7 +78,7 @@ export function LikeItem({ like }: Props) {
   }, [html]);
 
   return (
-    <article ref={ref} className="rounded-lg border bg-white p-4">
+    <article ref={ref} className="overflow-hidden rounded-lg border bg-white p-4">
       <div className="mb-2 flex items-center justify-between text-xs text-gray-400">
         <time dateTime={date.toISOString()}>{dateLabel}</time>
         <span>#{like.likeOrder + 1}</span>

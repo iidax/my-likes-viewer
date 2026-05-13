@@ -13,7 +13,7 @@ import "./app.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja">
+    <html lang="ja" className="overflow-y-scroll">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,7 +26,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <script async src="https://platform.twitter.com/widgets.js" />
       </head>
-      <body className="min-h-screen bg-gray-50 text-gray-900">
+      <body className="min-h-screen overflow-x-hidden bg-gray-50 text-gray-900">
         <header className="border-b bg-white px-4 py-3">
           <nav className="mx-auto flex max-w-2xl items-center gap-6">
             <span className="font-semibold">My Likes Viewer</span>
