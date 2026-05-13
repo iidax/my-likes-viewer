@@ -2,8 +2,10 @@
 
 X（旧Twitter）の「いいね」を過去に遡って表示するWebアプリです。
 
+アクセスはこちら: [https://iidax.github.io/my-likes-viewer/](https://iidax.github.io/my-likes-viewer/)
+
 「いいね」のデータは、Xのアーカイブから解析します。
-Xのデータの解析はブラウザ上で行うため、安心して利用できます。
+Xのデータの解析はブラウザ上でのみ実行され、外部には送信されません。
 
 ### 機能
 
@@ -124,6 +126,6 @@ window.YTD.like.part0 = [
 1. 以下のコマンドを実行して、開発サーバーを起動する
 
 ```bash
-npm run dev
+npm run dev:frontend
 ```
 
