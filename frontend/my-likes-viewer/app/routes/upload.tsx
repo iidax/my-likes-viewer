@@ -69,7 +69,7 @@ export default function Upload() {
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
-      <h1 className="mb-2 text-xl font-semibold">likes.js をアップロード</h1>
+      <h1 className="mb-2 text-xl font-semibold">like.js をアップロード</h1>
       <p className="mb-3 text-sm text-gray-500">
         X のデータアーカイブに含まれる{" "}
         <code className="rounded bg-gray-100 px-1">data/like.js</code> を選択してください。

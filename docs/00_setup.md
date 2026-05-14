@@ -105,7 +105,7 @@ mkdir -p app/components app/lib/db app/utils
 | `app/lib/db/client.ts` | Worker へのメッセージングをラップした DB クライアント |
 | `app/lib/db/likes.ts` | likes の CRUD |
 | `app/utils/snowflake.ts` | tweetId → Date の変換 |
-| `app/utils/parseLikesJS.ts` | likes.js → Like[] パーサー |
+| `app/utils/parseLikesJS.ts` | like.js → Like[] パーサー |
 
 新しいマイグレーションを追加する場合は `migrations/` に `0002_xxx.sql` を置くだけでよい。
 
@@ -115,7 +115,7 @@ mkdir -p app/components app/lib/db app/utils
 | ファイル | パス | 内容 |
 |---|---|---|
 | `app/routes/home.tsx` | `/` | いいね一覧・フィルター・ページネーション |
-| `app/routes/upload.tsx` | `/upload` | likes.js アップロード |
+| `app/routes/upload.tsx` | `/upload` | like.js アップロード |
 | `app/routes/settings.tsx` | `/settings` | X API キー設定・DBクリア |
 | `app/components/LikeItem.tsx` | - | 1件表示 |
 | `app/components/LikesList.tsx` | - | リスト表示 |

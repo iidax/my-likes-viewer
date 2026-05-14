@@ -68,7 +68,7 @@ self.addEventListener("message", (e: Event) => {
       db.exec("DELETE FROM likes");
       (self as unknown as Worker).postMessage({ id, ok: true });
     } else if (type === "batch") {
-      // 複数の INSERT を1トランザクションにまとめて実行（likes.js インポート時に使用）
+      // 複数の INSERT を1トランザクションにまとめて実行（like.js インポート時に使用）
       db.exec("BEGIN");
       try {
         for (const { sql: s, bind: b } of statements as { sql: string; bind?: BindParam[] }[]) {

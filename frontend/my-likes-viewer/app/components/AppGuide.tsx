@@ -15,7 +15,7 @@ const steps = [
           データのアーカイブをダウンロード
         </a>{" "}
         にアクセスし、アーカイブの取得をリクエストしましょう。届いたファイルの中から{" "}
-        <code className="rounded bg-gray-100 px-1 text-xs">data/likes.js</code>{" "}
+        <code className="rounded bg-gray-100 px-1 text-xs">data/like.js</code>{" "}
         を手元に控えてください。
       </>
     ),
@@ -28,7 +28,7 @@ const steps = [
         <Link to="/upload" className="text-blue-600 underline hover:text-blue-800">
           アップロードページ
         </Link>{" "}
-        で <code className="rounded bg-gray-100 px-1 text-xs">likes.js</code>{" "}
+        で <code className="rounded bg-gray-100 px-1 text-xs">like.js</code>{" "}
         をアップロードしましょう。 解析はブラウザ上で行われます。
       </>
     ),
@@ -57,7 +57,7 @@ const GuideContent = () => (
 
     <details className="mt-4 border-t pt-3 text-xs text-gray-500">
       <summary className="cursor-pointer select-none font-medium text-gray-600 hover:text-gray-800">
-        likes.js とは？
+        like.js とは？
       </summary>
       <div className="mt-2 space-y-2 leading-relaxed">
         <p>
