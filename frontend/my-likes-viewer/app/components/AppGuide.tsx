@@ -14,7 +14,7 @@ const steps = [
         >
           データのアーカイブをダウンロード
         </a>{" "}
-        にアクセスし、アーカイブの取得をリクエストしましょう。届いたファイルの中から{" "}
+        にアクセスし、アーカイブの取得をリクエストしましょう。ダウンロードしたファイルの中から{" "}
         <code className="rounded bg-gray-100 px-1 text-xs">data/like.js</code>{" "}
         を手元に控えてください。
       </>
@@ -24,12 +24,12 @@ const steps = [
     label: "STEP 2",
     text: (
       <>
-        トップページの中央付近にあるファイル選択欄もしくは
+        トップページの下部付近にあるファイルアップロード欄もしくは
         <Link to="/upload" className="text-blue-600 underline hover:text-blue-800">
           アップロードページ
         </Link>{" "}
         で <code className="rounded bg-gray-100 px-1 text-xs">like.js</code>{" "}
-        をアップロードしましょう。 解析はブラウザ上で行われます。
+        を読み込ませましょう。
       </>
     ),
   },
